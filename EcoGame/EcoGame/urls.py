@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from EcoGame.views import t2
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("entregable2/", t2),
 ]
