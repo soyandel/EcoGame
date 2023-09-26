@@ -20,5 +20,5 @@ from EcoGame.views import intento
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("entregable2/", intento),
+    path("intento/", intento),
 ]
