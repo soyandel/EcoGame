@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from EcoGame.views import intento
+from EcoGame.views import intento, datoss
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("intento/", intento),
+    path("datos/",datoss),
 ]
