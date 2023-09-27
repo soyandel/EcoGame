@@ -24,5 +24,5 @@ urlpatterns = [
     path("blog/", include("eco_app.urls")),
     path("intento/", intento),
     path("datos/",datoss),
-    path("app/",view.index),
+    path("app/",views.index),
 ]
