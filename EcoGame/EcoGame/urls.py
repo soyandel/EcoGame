@@ -22,7 +22,6 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("t2/", include("eco_app.urls")),
-    path("accounts/", include("eco_app.urls")),
     path("intento/", intento),
     path("datos/",datoss),
 ]
