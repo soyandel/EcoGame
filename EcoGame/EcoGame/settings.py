@@ -80,7 +80,7 @@ DATABASES = {
         "NAME": "Ecogame",
         "USER": "EcoGame",
         "PASSWORD": "EcoGame-10",
-        "HOST": "Eco-game",
+        "HOST": "EcoGame",
         "PORT": "5432",
     }
 }
