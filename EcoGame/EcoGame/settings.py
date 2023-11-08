@@ -78,7 +78,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "Ecogame",
-        "USER": "EcoGame",
+        "USER": "postgres",
         "PASSWORD": "Ecogame-10",
         "HOST": "localhost",
         "PORT": "5432",
