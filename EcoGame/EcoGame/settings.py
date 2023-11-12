@@ -77,7 +77,7 @@ WSGI_APPLICATION = "EcoGame.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Ecogame',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'Ecogame-10',
         'HOST': 'localhost',
