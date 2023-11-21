@@ -24,10 +24,10 @@ for i in range(5):
 run = True
 while run:
 
-    screen.fill("white")
+    screen.fill("black")
 
     for box in boxes:
-        pygame.draw.rect(screen,"black",box)
+        pygame.draw.rect(screen,"white",box)
 
     for event in pygame.event.get(): 
         if event.type == pygame.MOUSEBUTTONDOWN:
