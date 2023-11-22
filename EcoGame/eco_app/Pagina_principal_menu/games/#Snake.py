@@ -1,176 +1,139 @@
 #Snake#
 
-###Librerias###
-import turtle #Importa basicamente un eje de coordenadas x e y
-import time
-import random
+import re
+import pygame, random, sys, time
+from pygame.math import Vector2
 
-###Constantes###
-delay = 0.1
+pygame.init()
 
-###Pantalla###
-screen = turtle.Screen() #Define la pantalla
-screen.setup(width = 600, height = 600) #Tamaño de la pantalla
-#A su vez, 500 es la distacia total de la ventana, es decir, desde el punto (0,0), 
-#se extiene -250 y 250 en el eje X
-screen.tracer #idk est xd
-screen.bgcolor("black") #Color del fondo
+###Screen###
+size = (720,480)
+screen = pygame.display.set_mode(size)
 
+class Snake:
+    #Se define como inicia la serpiente
+    def __init__(self):
+        self.body = [Vector2(10,100), Vector2(10,110), Vector2(10,120)]
+        self.direction = Vector2(0,-10)
+        self.add = False
 
-###Serpiente###
-snake = turtle.Turtle() #define el objeto como algo movible(?)
-snake.speed(0)
-snake.shape("square") #forma
-snake.color("green4") #color
-snake.penup() #No deja rastro a medida q se mueve 
-snake.goto(0,0) #parte del punto 0,0
-snake.direction = "stop" #direccion en la que apunta la serpiente
+    #Dibuja los cuerpos antes definidos
+    def draw(self):
+        for bloque in self.body:
+            pygame.draw.rect(screen,"green",(bloque.x,bloque.y, 10,10))
+    
+    #Movimento de los cuerpos
+    def move(self):
+        if self.add == True:    
+            body_copy = self.body
+            body_copy.insert(0,body_copy[0]+self.direction)
+            self.body = body_copy[:]
+            self.add == False
+        else: 
+            body_copy = self.body[:-1]
+            body_copy.insert(0,body_copy[0]+self.direction)
+            self.body = body_copy[:]
 
-###Segmentos / Cuerpo de la serpiente###
-segmentos = [] #Para este caso, la mejor estructura de datos son las listas
+    #Movimiento con el teclado
+    def move_up(self):
+        self.direction = Vector2(0,-10)
 
-###Marcador de puntos###
-texto = turtle.Turtle()
-texto.speed(0)
-texto.color("white")
-texto.penup()
-texto.hideturtle() #Para esconder la punta de la fleca (los objetos turtle son como flechas tipo vectores)
-texto.goto(0,260)
-texto.write("Score: 0       High Score: 0", align="center", font=("Courier", 24, "normal"))
+    def move_down(self):
+        self.direction = Vector2(0,10)
 
-linea = turtle.Turtle()
-linea.speed(0)
-linea.color("white")
-linea.penup()
-linea.hideturtle()
-linea.goto(-300,240)
-linea.write("_________________________________________________", align="left",font=("Courier",24,"normal"))
+    def move_right(self):
+        self.direction = Vector2(10,0)
 
-score = 0
-high_score = 0
+    def move_left(self):
+        self.direction = Vector2(-10,0)  
 
-###Comida###
-food = turtle.Turtle()
-food.shape("circle")
-food.color("red")
-food.penup()
-food.goto(0,100)
-
-
-###Funciones###
-def arriba(): #Cuando se usa la funcion, cambia la direccion de la serpiente
-    snake.direction = "up"
-def abajo():
-    snake.direction = "down"
-def derecha():
-    snake.direction = "right"
-def izquierda():
-    snake.direction = "left"
-
-def mov(): #Funcion Condicional que revisa el valor de snake.direction
-    if snake.direction == "up": 
-        y = snake.ycor() #Obtiene el valor de la coordenadas en Y y lo guarda en la variable y
-        snake.sety(y + 20) #Reeposiciona a objeto snake en y+10 pixles
-        #OJO que el .sety configura el valor en el eje Y
-
-    if snake.direction == "down": 
-        y = snake.ycor() 
-        snake.sety(y - 20)
-
-    if snake.direction == "right": 
-        x = snake.xcor() 
-        snake.setx(x + 20)
-        #El .setx configura el valor en el eje X 
-
-    if snake.direction == "left": 
-        x = snake.xcor() 
-        snake.setx(x - 20)
-
-###Teclado###
-screen.listen() #Le digo al programa que este atento a objeto externos
-screen.onkeypress(arriba,"Up") #Le digo este atento al teclado
-#En este caso le digo que ejecute la función arriba si presiono la tecla "Up" (Flecha arriba)
-screen.onkeypress(abajo,"Down")
-screen.onkeypress(derecha,"Right")
-screen.onkeypress(izquierda,"Left")
-
-###Bucle de esperar ordenes###
-while True: #Bucle infinito hasta que reciba intrucciones
-    ##Actualización de la pantalla##
-    screen.update() 
-
-    ##Colsiones con el borde##
-    if (snake.xcor() > 280) or (snake.xcor() < -280) or (snake.ycor() > 220) or  (snake.ycor() < -280):
-        time.sleep(1) 
-        snake.goto(0,0)
-        snake.direction = "stop"
-
-        #Esconder los segmentos porque no sé como borrarlos XD#
-        for segmento in segmentos:
-            segmento.goto(2000,2000) #manda los segmentos fuera de la pantalla visible
-
-        #Limpiar lista de segmentos#
-        segmentos.clear() #limpia la lista
-
-        #Resetea el marcador#
-        score = 0
-        texto.clear()#Limpia el texto
-        texto.write("Score: {}       High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
-
-
-    ##Colisiones de la comida##
-    if snake.distance(food) < 20: # el .distance(objeto) mide la distancia entre el objeto en el parentesis
-        x = random.randint(-280,280) #Se otroga valores random enteros a variables x e y que posteriormente son asigandas al objeto comida
-        y = random.randint(-280,220)
-        food.goto(x,y)
-
-        nuevo_segmento = turtle.Turtle()
-        nuevo_segmento.speed(0)
-        nuevo_segmento.shape("square")
-        nuevo_segmento.color("green3")
-        nuevo_segmento.penup()
-        nuevo_segmento.goto(1000,1000)
-        segmentos.append(nuevo_segmento)
-
-        #aumentar marcador
-        score += 1
-        if score > high_score:
-            high_score = score
-
-        texto.clear()
-        texto.write("Score: {}       High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+    #Si se le ocurre morir
+    def die(self):
+        if (self.body[0].x >= size[0]+1) or (self.body[0].y >= size[1]+1) or (self.body[0].x <= -1) or (self.body[0].y <= -1):
+            return True
         
+        #Colision con su propio cuerpo
+
+        for i in self.body[1:]:
+            if self.body[0] == i:
+                return True
     
-    ##Movimiento de los segmento tras la cabeza de snake##
-    totalSeg = len(segmentos)
-    for seg in range(totalSeg-1, 0, -1): #Se excluye el 0
-        x = segmentos[seg-1].xcor() #Se extraen las coordenadas de la valor anterior en la lista, y se las agregan al siguiente, y así consecutivamente
-        y = segmentos[seg-1].ycor() #Agregar que este ciclo for sigue las coordenadas del caso exclusivo
-        segmentos[seg].goto(x,y)
-    
-    if totalSeg > 0: #Este es el caso exclusivo para cuando exista un valor en lista, el anterior ciclo for puede fallar si no existe un valor
-        x = snake.xcor() #Se toman las coordenadas de la cabeza 
-        y = snake.ycor()
-        segmentos[0].goto(x,y)
 
-    mov()
 
-    ##Colisiones con el cuerpo##
-    for segmento in segmentos:
-        if segmento.distance(snake) < 20:
-            time.sleep(1)
-            snake.goto(0,0)
-            snake.direction = "stop"
+class Manzana:
+    def __init__(self) -> None:
+        self.generate() 
 
-            #Esconder los segmentos#
-            for segmento in segmentos:
-                segmento.goto(2000,2000)
+    def draw(self):
+        pygame.draw.rect(screen, "red", (self.pos.x, self.pos.y, 10,10))
 
-            #Limpiar lista de segmentos#
-            segmentos.clear()
+    def generate(self):
+        self.x = random.randrange(0,size[0]/10)
+        self.y = random.randrange(0,size[1]/10)
+        self.pos = Vector2(self.x*10, self.y*10)
 
-            score = 0
-            texto.clear()
-            texto.write("Score: {}       High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+    def check_collision (self, snake):
+        if snake.body[0] == self.pos:
 
-    time.sleep(delay)
+            self.generate()
+            snake.add = True
+
+            return True
+        
+        for bloque in snake.body[1:]:
+            if self.pos == bloque:
+                self.generate()
+
+def main():
+
+    #Se le otorga la clase Snake a la variable snake
+    snake = Snake()
+    apple = Manzana()
+
+    score = 0
+
+    fps = clock = pygame.time.Clock()
+
+    while True:
+
+        fps.tick(30)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            
+            if event.type == pygame.KEYDOWN and snake.direction.y != 10:
+                if event.key == pygame.K_UP:
+                    snake.move_up()
+
+            if event.type == pygame.KEYDOWN and snake.direction.y != -10:
+                if event.key == pygame.K_DOWN:
+                    snake.move_down()
+            
+            if event.type == pygame.KEYDOWN and snake.direction.x != -10:
+                if event.key == pygame.K_RIGHT:
+                    snake.move_right()
+            
+            if event.type == pygame.KEYDOWN and snake.direction.x != 10:
+                if event.key == pygame.K_LEFT:
+                    snake.move_left()
+
+
+
+
+        screen.fill("black")
+        snake.draw()
+        apple.draw()
+
+        snake.move()
+
+
+        if snake.die():
+            quit()
+
+        if apple.check_collision(snake): 
+            score =+ 1
+        pygame.display.update()
+
+
+main()
