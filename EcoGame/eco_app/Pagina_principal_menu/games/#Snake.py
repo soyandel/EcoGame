@@ -1,7 +1,7 @@
 #Snake#
 
 import re
-import pygame, random, sys, time
+import pygame, random, sys, time, os
 from pygame.math import Vector2
 
 pygame.init()
@@ -9,6 +9,10 @@ pygame.init()
 ###Screen###
 size = (720,480)
 screen = pygame.display.set_mode(size)
+
+###Score###
+score_text = pygame.font.SysFont("Russo One",15)
+
 
 class Snake:
     #Se define como inicia la serpiente
@@ -28,7 +32,7 @@ class Snake:
             body_copy = self.body
             body_copy.insert(0,body_copy[0]+self.direction)
             self.body = body_copy[:]
-            self.add == False
+            self.add = False
         else: 
             body_copy = self.body[:-1]
             body_copy.insert(0,body_copy[0]+self.direction)
@@ -83,6 +87,8 @@ class Manzana:
         for bloque in snake.body[1:]:
             if self.pos == bloque:
                 self.generate()
+        
+        return False
 
 def main():
 
@@ -91,7 +97,7 @@ def main():
     apple = Manzana()
 
     score = 0
-
+    high_score = 0
     fps = clock = pygame.time.Clock()
 
     while True:
@@ -133,6 +139,13 @@ def main():
 
         if apple.check_collision(snake): 
             score =+ 1
+
+        if score >= high_score:
+            high_score = score
+        
+        text = score_text.render("Score: {}         High Score: {}".format(score, high_score),1,"white")
+        screen.blit(text,(size[0]-text.get_width()-20,15))
+
         pygame.display.update()
 
 
