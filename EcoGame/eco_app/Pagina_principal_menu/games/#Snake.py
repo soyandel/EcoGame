@@ -1,7 +1,7 @@
 #Snake#
 
 import re
-import pygame, random, sys, time, os
+import pygame, random, sys, time, os, asyncio
 from pygame.math import Vector2
 
 pygame.init()
@@ -90,7 +90,7 @@ class Manzana:
         
         return False
 
-def main():
+async def main():
 
     #Se le otorga la clase Snake a la variable snake
     snake = Snake()
@@ -147,6 +147,7 @@ def main():
         screen.blit(text,(size[0]-text.get_width()-20,15))
 
         pygame.display.update()
+        await asyncio.sleep(0)
 
 
-main()
+asyncio.run(main())
