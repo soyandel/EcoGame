@@ -9,13 +9,13 @@
 <body>
     <div class="formulario">
         <h1>Inicio de Sesion</h1>
-        <form method="post">
+        <form action="login.php" method="post">
             <div class="username"> 
-                <input type="text" required>
+                <input type="text" name="txtusuario" placeholder="Ingrese nombre de Usuario" required>
                 <label>Nombre de Usuario</label> 
             </div>
             <div class="username">
-                <input type="password" required>
+                <input type="password" name="txtpass" placeholder="Inngrese Contraseña" required>
                 <label>Contraseña</label>
             </div>
             <input type="submit" value="Iniciar">
