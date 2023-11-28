@@ -3,27 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <LINK REL="stylesheet" HREF="style.css" TYPE="text/css">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="formulario">
-        <h1>Inicio de Sesion</h1>
-        <form action="login.php" method="post">
-            <div class="username"> 
-                <input type="text" name="txtusuario" placeholder="Ingrese nombre de Usuario" required>
-                <label>Nombre de Usuario</label> 
-            </div>
-            <div class="username">
-                <input type="password" name="txtpass" placeholder="Inngrese Contraseña" required>
-                <label>Contraseña</label>
-            </div>
-            <input type="submit" value="Iniciar">
-            <div class="registrarse">
-                Registrese <a href="a">aquí</a>
-            </div>
-        </form>
-
-    </div>
+    <h1>Inicio de Sesion</h1>
+    <form action="login.php" method="POST">
+        <input type="text" name="txtusuario" placeholder="Ingrese nombre de Usuario">
+        <br><br>
+        <input type="password" name="txtpass" placeholder="Inngrese Contraseña">
+        <br><br>
+        <button type="submit" class="boton-estilo
+        ">Ingresar</button>
+        <div class="registrarse">
+            Registrese <a href="a">aquí</a>
+        </div>
+    </form>
 </body>
 </html>
